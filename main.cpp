@@ -10,14 +10,18 @@
 
 using namespace std;
 int main() {
-    Machine m;
-
-    m.start();
-
-    m.load_register_mem("5", "8");
-    m.load_register_bit_pattern("6", "D2");
-
-    m.status();
-
+//    Machine m;
+//
+//    m.start();
+//
+//    m.load_register_mem("5", "8");
+//    m.load_register_bit_pattern("6", "D2");
+//
+//    m.status();
+    string num1="01101111";
+    string num2="10111001";
+    string two1=twos_comp(num1);
+    string two2=twos_comp(num2);
+    cout<<two1<<" "<<two2;
     return 0;
 }

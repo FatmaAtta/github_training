@@ -148,8 +148,30 @@ string hex_to_binary(char hexa){
     hex_binary['F']="1111";
     return hex_binary[hexa];
 }
+string binary_to_hex(string num){
+    unordered_map<string,char> binary_hex;
+    string half1=num.substr(0,num.length()/2);
+    string half2=num.substr(num.length()/2);
+    binary_hex["0001"]='1';
+    binary_hex["0010"]='2';
+    binary_hex["0011"]='3';
+    binary_hex["0100"]='4';
+    binary_hex["0101"]='5';
+    binary_hex["0110"]='6';
+    binary_hex["0111"]='7';
+    binary_hex["1000"]='8';
+    binary_hex["1001"]='9';
+    binary_hex["1010"]='A';
+    binary_hex["1011"]='B';
+    binary_hex["1100"]='C';
+    binary_hex["1101"]='D';
+    binary_hex["1110"]='E';
+    binary_hex["1111"]='F';
+    string binary=to_string(binary_hex[half1])+to_string(binary_hex[half2]);
+    return binary;
+}
 string ones_comp(string binary){
-    for(int i=7;i>0;i--){
+    for(int i=0;i<8;i++){
         if(binary[i]=='1'){
             binary[i]='0';
         }
@@ -157,18 +179,40 @@ string ones_comp(string binary){
             binary[i]='1';
         }
     }
+    return binary;
 }
 string add(string num1,string num2){
-
+    string result="";
+    int carry=0,bitsum;
+    for(int i=7;i>=0;i--){
+        int bit1=num1[i]-'0';
+        int bit2=num2[i]-'0';
+        bitsum=bit1+bit2+carry;
+        result= to_string(bitsum%2)+result;
+        carry=bitsum/2;
+    }
+    return result.substr(result.length() - 8); //to only return 8 bits, incase there's an overflow
+}
+string twos_comp(string num){
+    string ones= ones_comp(num);
+    string twos=add(ones,"00000001");
+    return twos;
 }
 void Machine::add_2s_complement(string register1,string register2,string register3){
-    string num1 = hex_to_binary(register1[0])+hex_to_binary(register1[1]);
-    string num2 = hex_to_binary(register2[0])+hex_to_binary(register2[1]);
-    string num3 = hex_to_binary(register3[0])+hex_to_binary(register3[1]);
-    twos_comp(num1);
-    twos_comp(num2);
-    twos_comp(num3);
-    //add();
+//    string num1 = hex_to_binary(register2[0])+hex_to_binary(register2[1]);
+//    string num2 = hex_to_binary(register3[0])+hex_to_binary(register3[1]);
+//    string num3 = hex_to_binary(register3[0])+hex_to_binary(register3[1]);
+    int reg2_index = stoi(register2, 0, 16);
+    int reg3_index = stoi(register3, 0, 16);
+    string num2 = this->reg[reg2_index].get_content();
+    string num3 = this->reg[reg3_index].get_content();
+
+    string twos2 = twos_comp(num2);
+    string twos3 = twos_comp(num3);
+    string result = add(twos2,twos3);
+    result= binary_to_hex(result);
+    int reg1_index = stoi(register1, 0, 16);
+    this->reg[reg1_index].set_content(result);
 }
 void Machine::halt()
 {
