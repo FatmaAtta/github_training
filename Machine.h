@@ -66,8 +66,8 @@ public:
 };
 
 string hex_to_binary(string hexa);
-
-
+string ones_comp(string binary);
+string add(string num1,string num2);
 
 
 

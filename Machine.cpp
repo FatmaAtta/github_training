@@ -148,8 +148,27 @@ string hex_to_binary(char hexa){
     hex_binary['F']="1111";
     return hex_binary[hexa];
 }
+string ones_comp(string binary){
+    for(int i=7;i>0;i--){
+        if(binary[i]=='1'){
+            binary[i]='0';
+        }
+        else{
+            binary[i]='1';
+        }
+    }
+}
+string add(string num1,string num2){
+
+}
 void Machine::add_2s_complement(string register1,string register2,string register3){
-    string
+    string num1 = hex_to_binary(register1[0])+hex_to_binary(register1[1]);
+    string num2 = hex_to_binary(register2[0])+hex_to_binary(register2[1]);
+    string num3 = hex_to_binary(register3[0])+hex_to_binary(register3[1]);
+    twos_comp(num1);
+    twos_comp(num2);
+    twos_comp(num3);
+    //add();
 }
 void Machine::halt()
 {
